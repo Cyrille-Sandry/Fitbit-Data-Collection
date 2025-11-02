@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard DummyJSON</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+  <h2 class="mb-4">Analyse des utilisateurs DummyJSON</h2>
+
+  {% for g in graphs %}
+  <div class="mb-5 border rounded p-2 shadow-sm">
+      <div id="plot{{ loop.index }}" style="height:450px;"></div>
+      <script>
+          var fig = {{ g | safe }};
+          Plotly.newPlot('plot{{ loop.index }}', fig.data, fig.layout);
+      </script>
+  </div>
+  {% endfor %}
+
+  <h3 class="mt-4">Aperçu des données</h3>
+  {{ table | safe }}
+</body>
+</html>

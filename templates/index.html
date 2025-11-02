@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Fitbit Pipeline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>body{font-family:Arial,sans-serif;margin:2rem} a.button{background:#4F46E5;color:#fff;padding:.6rem 1rem;border-radius:8px;text-decoration:none}</style>
+</head>
+<body>
+  <h1>Fitbit Pipeline</h1>
+  {% if is_auth %}
+    <p>Connecté. <a class="button" href="{{ url_for('dashboard') }}">Voir le tableau de bord</a></p>
+    <p><a href="{{ url_for('logout') }}">Se déconnecter</a></p>
+  {% else %}
+    <p>Connectez votre compte Fitbit pour afficher vos données.</p>
+    <p><a class="button" href="{{ url_for('login') }}">Se connecter à Fitbit</a></p>
+  {% endif %}
+</body>
+</html>

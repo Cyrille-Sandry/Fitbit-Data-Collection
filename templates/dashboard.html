@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Tableau de bord Fitbit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body{font-family:Arial,sans-serif;margin:2rem}
+    .row{display:flex;gap:2rem;flex-wrap:wrap}
+    .card{border:1px solid #ddd;padding:1rem;border-radius:10px;flex:1;min-width:280px}
+    .actions{margin-bottom:1rem}
+    input[type="date"]{padding:.4rem}
+    button{padding:.5rem .9rem;border:0;background:#4F46E5;color:#fff;border-radius:8px;cursor:pointer}
+    pre{background:#f6f6f6;padding:.5rem;border-radius:5px;overflow-x:auto}
+  </style>
+</head>
+<body>
+  <h1>Tableau de bord Fitbit</h1>
+
+  <div class="actions">
+    <form method="post">
+      <label for="date">Choisir une date :</label>
+      <input id="date" name="date" type="date" value="{{ date_str }}">
+      <button type="submit">Charger</button>
+      <a href="{{ url_for('logout') }}" style="margin-left:1rem;">Se déconnecter</a>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h2>Résumé du {{ date_str }}</h2>
+      <p><strong>Pas :</strong> {{ steps }}</p>
+      <canvas id="distancesChart"></canvas>
+    </div>
+    <div class="card">
+      <h2>Réponse JSON brute</h2>
+      <pre>{{ json_raw | tojson(indent=2) }}</pre>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('distancesChart');
+    const labels = {{ labels | tojson | safe }};
+    const values = {{ values | tojson | safe }};
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{ label: "Distance (km) par type d'activité", data: values }]
+      },
+      options: { scales: { y: { beginAtZero: true } } }
+    });
+  </script>
+</body>
+</html>
